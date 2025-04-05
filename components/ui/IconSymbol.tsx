@@ -1,48 +1,45 @@
-// components/ui/IconSymbol.tsx
-import { SymbolView, SymbolViewProps, SymbolWeight } from 'expo-symbols';
-import { StyleProp, ViewStyle, View } from 'react-native';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { SymbolWeight } from 'expo-symbols';
+import React from 'react';
+import { OpaqueColorValue, StyleProp, ViewStyle } from 'react-native';
 
+// Add your SFSymbol to MaterialIcons mappings here.
+const MAPPING = {
+    // See MaterialIcons here: https://icons.expo.fyi
+    // See SF Symbols in the SF Symbols app on Mac.
+    'house.fill': 'home',
+    'paperplane.fill': 'send',
+    'chevron.left.forwardslash.chevron.right': 'code',
+    'chevron.right': 'chevron-right',
+    'person.fill': 'person',
+    'person.3.fill': 'people',
+    'book.closed.fill': 'book',
+} as Partial<
+    Record<
+        import('expo-symbols').SymbolViewProps['name'],
+        React.ComponentProps<typeof MaterialIcons>['name']
+    >
+>;
+
+export type IconSymbolName = keyof typeof MAPPING;
+
+/**
+ * An icon component that uses native SFSymbols on iOS, and MaterialIcons on Android and web. This ensures a consistent look across platforms, and optimal resource usage.
+ *
+ * Icon `name`s are based on SFSymbols and require manual mapping to MaterialIcons.
+ */
 export function IconSymbol({
-  name,
-  size = 24,
-  color,
-  style,
-  weight = 'regular',
-}: {
-  name: SymbolViewProps['name'];
-  size?: number;
-  color: string;
-  style?: StyleProp<ViewStyle>;
-  weight?: SymbolWeight;
-}) {
-  return (
-    <View style={[styles.iconContainer, { borderRadius: size * 0.5 }]}>
-      <SymbolView
-        weight={weight}
-        tintColor={color}
-        resizeMode="center"
-        name={name}
-        style={[
-          styles.icon,
-          {
-            width: size,
-            height: size,
-          },
-          style,
-        ]}
-      />
-    </View>
-  );
-}
+    name,
+    size = 24,
+    color,
+    style,
 
-const styles = {
-  iconContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    padding: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  icon: {
-    margin: 4,
-  },
-};
+}: {
+    name: IconSymbolName;
+    size?: number;
+    color: string | OpaqueColorValue;
+    style?: StyleProp<ViewStyle>;
+    weight?: SymbolWeight;
+}) {
+    return <MaterialIcons color={color} size={size} name={MAPPING[name]} style={style} />;
+}

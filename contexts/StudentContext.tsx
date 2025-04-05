@@ -6,6 +6,7 @@ type StudentContextType = {
     subjects: Subject[];
     updateStudentSubjects: (studentId: string, subjectId: string) => void;
     addSubject: (name: string) => void;
+    deleteSubject: (subjectId: string) => void;
 };
 
 const StudentContext = createContext<StudentContextType>({
@@ -13,6 +14,7 @@ const StudentContext = createContext<StudentContextType>({
     subjects: initialSubjects,
     updateStudentSubjects: () => { },
     addSubject: () => { },
+    deleteSubject: () => { },
 });
 
 export const StudentProvider = ({ children }: { children: React.ReactNode }) => {
@@ -41,8 +43,19 @@ export const StudentProvider = ({ children }: { children: React.ReactNode }) => 
         setSubjects(prev => [...prev, newSubject]);
     };
 
+    const deleteSubject = (subjectId: string) => {
+        setSubjects(prev => prev.filter(subject => subject.id !== subjectId));
+        
+        setStudents(prevStudents => 
+          prevStudents.map(student => ({
+            ...student,
+            selectedSubjects: student.selectedSubjects.filter(id => id !== subjectId)
+          }))
+        );
+      };
+
     return (
-        <StudentContext.Provider value={{ students, subjects, updateStudentSubjects, addSubject }}>
+        <StudentContext.Provider value={{ students, subjects, updateStudentSubjects, addSubject, deleteSubject }}>
             {children}
         </StudentContext.Provider>
     );

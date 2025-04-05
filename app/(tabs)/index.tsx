@@ -1,124 +1,184 @@
-import { StyleSheet, Platform, View } from 'react-native';
+import { ScrollView } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { StyleSheet, View } from 'react-native';
 import { Link } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { TouchableOpacity } from 'react-native';
+import { BlurView } from 'expo-blur';
+import { SFSymbol } from 'expo-symbols';
 
 export default function HomeScreen() {
     return (
-      <View style={styles.container}>
-        <ThemedView style={styles.content}>
-          <ThemedText type="title" style={styles.title}>
-            School Manager
-          </ThemedText>
-  
-          <ThemedText type="subtitle" style={styles.subtitle}>
-            Gerencie alunos e disciplinas de forma simples
-          </ThemedText>
-  
-          <View style={styles.buttonsContainer}>
-            <Link href="/(tabs)/alunos" asChild>
-              <TouchableOpacity style={[styles.card, styles.studentsCard]}>
-                <View style={styles.iconWrapper}>
-                  <IconSymbol
-                    name="person.3.fill"
-                    size={48}
-                    color="#FFFFFF"
-                  />
-                </View>
-                <ThemedText type="defaultSemiBold" style={styles.cardText}>
-                  Alunos
-                </ThemedText>
-              </TouchableOpacity>
-            </Link>
-  
-            <Link href="/(tabs)/disciplinas" asChild>
-              <TouchableOpacity style={[styles.card, styles.subjectsCard]}>
-                <View style={styles.iconWrapper}>
-                  <IconSymbol
-                    name="book.closed.fill"
-                    size={48}
-                    color="#FFFFFF"
-                  />
-                </View>
-                <ThemedText type="defaultSemiBold" style={styles.cardText}>
-                  Disciplinas
-                </ThemedText>
-              </TouchableOpacity>
-            </Link>
-          </View>
-        </ThemedView>
-      </View>
+        <LinearGradient
+            colors={['#0F172A', '#1E40AF']}
+            style={styles.container}
+        >
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                <ThemedView style={styles.content}>
+                    {/* Header Section */}
+                    <View style={styles.header}>
+                        <View style={styles.logoContainer}>
+                            <IconSymbol
+                                name="graduationcap.fill"
+                                size={100}
+                                color="#FFFFFF"
+                                style={styles.logoIcon}
+                            />
+                            <View style={styles.logoGlow} />
+                        </View>
+                        <ThemedText type="title" style={styles.title}>
+                            SchoolSync
+                        </ThemedText>
+                        <ThemedText type="subtitle" style={styles.subtitle}>
+                            Sua plataforma de gestão educacional
+                        </ThemedText>
+                    </View>
+
+                    {/* Cards Grid */}
+                    <View style={styles.grid}>
+                        <GlassCard
+                            title="Gerenciar Alunos"
+                            icon="person.3.fill"
+                            href="/(tabs)/alunos"
+                            color="#6366F1"
+                        />
+                        
+                        <GlassCard
+                            title="Disciplinas"
+                            icon="book.closed.fill"
+                            href="/(tabs)/disciplinas"
+                            color="#8B5CF6"
+                        />
+                    </View>
+
+                    {/* Footer */}
+                    <ThemedText style={styles.footerText}>
+                        Gestão simplificada, resultados extraordinários
+                    </ThemedText>
+                </ThemedView>
+            </ScrollView>
+        </LinearGradient>
     );
-  }
-  
-  // Atualize os estilos
-  const styles = StyleSheet.create({
+}
+
+const GlassCard = ({ title, icon, href, color }: {
+    title: string;
+    icon: SFSymbol;
+    href: string;
+    color: string;
+}) => (
+    <Link href={href} asChild>
+        <TouchableOpacity>
+            <BlurView intensity={30} style={[styles.card, { borderColor: color }]}>
+                <View style={styles.cardContent}>
+                    <View style={[styles.iconContainer, { backgroundColor: `${color}20` }]}>
+                        <IconSymbol
+                            name={icon}
+                            size={40}
+                            color="#FFFFFF"
+                            style={styles.icon}
+                        />
+                    </View>
+                    <ThemedText type="defaultSemiBold" style={styles.cardText}>
+                        {title}
+                    </ThemedText>
+                </View>
+            </BlurView>
+        </TouchableOpacity>
+    </Link>
+);
+
+const styles = StyleSheet.create({
     container: {
-      flex: 1,
+        flex: 1,
+        marginBottom: 50,
+    },
+    scrollContent: {
+        flexGrow: 1,
     },
     content: {
-      padding: 24,
-      alignItems: 'center',
+        flex: 1,
+        padding: 24,
+        justifyContent: 'space-between',
+    },
+    header: {
+        alignItems: 'center',
+        marginTop: 40,
+    },
+    logoContainer: {
+        position: 'relative',
+        marginBottom: 20,
+    },
+    logoIcon: {
+        opacity: 0.9,
+        transform: [{ rotate: '15deg' }],
+    },
+    logoGlow: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: '#6366F1',
+        opacity: 0.2,
+        borderRadius: 50,
+        transform: [{ scale: 1.4 }],
     },
     title: {
-      fontSize: 32,
-      marginBottom: 8,
+        fontSize: 40,
+        color: '#FFFFFF',
+        fontWeight: '800',
+        marginBottom: 8,
+        textAlign: 'center',
+        textShadowColor: 'rgba(99, 102, 241, 0.4)',
+        textShadowOffset: { width: 0, height: 4 },
+        textShadowRadius: 10,
+        paddingTop: 10,
     },
     subtitle: {
-      fontSize: 18,
-      marginBottom: 40,
-      color: '#666',
+        fontSize: 18,
+        color: '#CBD5E1',
+        textAlign: 'center',
+        maxWidth: 300,
+        lineHeight: 24,
     },
-    buttonsContainer: {
-      flexDirection: 'row',
-      gap: 20,
-      justifyContent: 'center',
+    grid: {
+        gap: 20,
+        marginVertical: 40,
     },
     card: {
-      width: 160,
-      height: 160,
-      borderRadius: 20,
-      padding: 20,
-      alignItems: 'center',
-      justifyContent: 'center',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.1,
-      shadowRadius: 6,
-      elevation: 4,
+        borderRadius: 24,
+        padding: 24,
+        overflow: 'hidden',
+        borderWidth: 1,
+        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+        minHeight: 160,
+        justifyContent: 'center',
+        backdropFilter: 'blur(10px)',
     },
-    iconWrapper: {
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-      borderRadius: 24,
-      padding: 12,
-      marginBottom: 15,
+    cardContent: {
+        alignItems: 'center',
+        gap: 20,
     },
-    studentsCard: {
-        backgroundColor: '#2563EB',
+    iconContainer: {
+        padding: 16,
+        borderRadius: 16,
+        aspectRatio: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    subjectsCard: {
-        backgroundColor: '#4F46E5',
-    },
-    cardIcon: {
-        marginBottom: 15,
+    icon: {
+        transform: [{ scale: 1.2 }],
     },
     cardText: {
+        fontSize: 20,
+        fontWeight: '600',
         color: '#FFFFFF',
-        fontSize: 18,
         textAlign: 'center',
+        letterSpacing: 0.5,
     },
     footerText: {
+        color: '#94A3B8',
         textAlign: 'center',
-        color: '#666',
-        marginTop: 30,
-    },
-    headerImage: {
-        color: '#A0A0A0',
-        bottom: -60,
-        left: -35,
-        position: 'absolute',
-        opacity: 0.8,
+        fontSize: 14,
+        marginBottom: 20,
     },
 });
