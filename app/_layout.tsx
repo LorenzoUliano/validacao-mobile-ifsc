@@ -1,4 +1,3 @@
-// app/_layout.tsx
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
@@ -9,6 +8,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { StudentProvider } from '@/contexts/StudentContext';
 import { SubjectProvider } from '@/contexts/SubjectContext';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -29,31 +29,33 @@ export default function RootLayout() {
     }
 
     return (
-        <StudentProvider>
-            <SubjectProvider>
-                <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-                    <Stack>
-                        <Stack.Screen
-                            name="(tabs)"
-                            options={{
-                                headerShown: false,
-                                headerStyle: {
-                                    backgroundColor: colorScheme === 'dark' ? '#1e293b' : '#f1f5f9',
-                                },
-                            }}
-                        />
-                        <Stack.Screen
-                            name="alunos/[id]"
-                            options={{
-                                title: 'Selecionar Disciplinas',
-                                headerBackTitle: 'Voltar',
-                            }}
-                        />
-                        <Stack.Screen name="+not-found" />
-                    </Stack>
-                    <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-                </ThemeProvider>
-            </SubjectProvider>
-        </StudentProvider>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <StudentProvider>
+                <SubjectProvider>
+                    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+                        <Stack>
+                            <Stack.Screen
+                                name="(tabs)"
+                                options={{
+                                    headerShown: false,
+                                    headerStyle: {
+                                        backgroundColor: colorScheme === 'dark' ? '#1e293b' : '#f1f5f9',
+                                    },
+                                }}
+                            />
+                            <Stack.Screen
+                                name="alunos/[id]"
+                                options={{
+                                    title: 'Selecionar Disciplinas',
+                                    headerBackTitle: 'Voltar',
+                                }}
+                            />
+                            <Stack.Screen name="+not-found" />
+                        </Stack>
+                        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+                    </ThemeProvider>
+                </SubjectProvider>
+            </StudentProvider>
+        </GestureHandlerRootView>
     );
 }

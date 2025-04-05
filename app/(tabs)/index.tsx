@@ -1,67 +1,124 @@
-import { Image, StyleSheet, Platform, View } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { StyleSheet, Platform, View } from 'react-native';
+import { Link } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { TouchableOpacity } from 'react-native';
 
 export default function HomeScreen() {
     return (
-        <View>
-            <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Welcome!</ThemedText>
-                <HelloWave />
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-                <ThemedText>
-                    Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-                    Press{' '}
-                    <ThemedText type="defaultSemiBold">
-                        {Platform.select({
-                            ios: 'cmd + d',
-                            android: 'cmd + m',
-                            web: 'F12'
-                        })}
-                    </ThemedText>{' '}
-                    to open developer tools.
+      <View style={styles.container}>
+        <ThemedView style={styles.content}>
+          <ThemedText type="title" style={styles.title}>
+            School Manager
+          </ThemedText>
+  
+          <ThemedText type="subtitle" style={styles.subtitle}>
+            Gerencie alunos e disciplinas de forma simples
+          </ThemedText>
+  
+          <View style={styles.buttonsContainer}>
+            <Link href="/(tabs)/alunos" asChild>
+              <TouchableOpacity style={[styles.card, styles.studentsCard]}>
+                <View style={styles.iconWrapper}>
+                  <IconSymbol
+                    name="person.3.fill"
+                    size={48}
+                    color="#FFFFFF"
+                  />
+                </View>
+                <ThemedText type="defaultSemiBold" style={styles.cardText}>
+                  Alunos
                 </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-                <ThemedText>
-                    Tap the Explore tab to learn more about what's included in this starter app.
+              </TouchableOpacity>
+            </Link>
+  
+            <Link href="/(tabs)/disciplinas" asChild>
+              <TouchableOpacity style={[styles.card, styles.subjectsCard]}>
+                <View style={styles.iconWrapper}>
+                  <IconSymbol
+                    name="book.closed.fill"
+                    size={48}
+                    color="#FFFFFF"
+                  />
+                </View>
+                <ThemedText type="defaultSemiBold" style={styles.cardText}>
+                  Disciplinas
                 </ThemedText>
-            </ThemedView>
-            <ThemedView style={styles.stepContainer}>
-                <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-                <ThemedText>
-                    When you're ready, run{' '}
-                    <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-                    <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-                    <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-                </ThemedText>
-            </ThemedView>
-        </View>
+              </TouchableOpacity>
+            </Link>
+          </View>
+        </ThemedView>
+      </View>
     );
-}
-
-const styles = StyleSheet.create({
-    titleContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 8,
+  }
+  
+  // Atualize os estilos
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
     },
-    stepContainer: {
-        gap: 8,
-        marginBottom: 8,
+    content: {
+      padding: 24,
+      alignItems: 'center',
     },
-    reactLogo: {
-        height: 178,
-        width: 290,
-        bottom: 0,
-        left: 0,
+    title: {
+      fontSize: 32,
+      marginBottom: 8,
+    },
+    subtitle: {
+      fontSize: 18,
+      marginBottom: 40,
+      color: '#666',
+    },
+    buttonsContainer: {
+      flexDirection: 'row',
+      gap: 20,
+      justifyContent: 'center',
+    },
+    card: {
+      width: 160,
+      height: 160,
+      borderRadius: 20,
+      padding: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 6,
+      elevation: 4,
+    },
+    iconWrapper: {
+      backgroundColor: 'rgba(255, 255, 255, 0.2)',
+      borderRadius: 24,
+      padding: 12,
+      marginBottom: 15,
+    },
+    studentsCard: {
+        backgroundColor: '#2563EB',
+    },
+    subjectsCard: {
+        backgroundColor: '#4F46E5',
+    },
+    cardIcon: {
+        marginBottom: 15,
+    },
+    cardText: {
+        color: '#FFFFFF',
+        fontSize: 18,
+        textAlign: 'center',
+    },
+    footerText: {
+        textAlign: 'center',
+        color: '#666',
+        marginTop: 30,
+    },
+    headerImage: {
+        color: '#A0A0A0',
+        bottom: -60,
+        left: -35,
         position: 'absolute',
+        opacity: 0.8,
     },
 });
