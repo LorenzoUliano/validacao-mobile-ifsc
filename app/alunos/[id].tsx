@@ -1,75 +1,121 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { useStudents } from '@/contexts/StudentContext';
 import { CustomCheckbox } from '@/components/CustomCheckbox';
+import { IconSymbol } from '@/components/ui/IconSymbol';
 
 export default function StudentSubjects() {
     const { id } = useLocalSearchParams();
     const { students, subjects, updateStudentSubjects } = useStudents();
-
     const student = students.find(s => s.id === id);
 
     return (
-        <View style={styles.container}>
-            <ThemedText style={styles.title}>Disciplinas de {student?.name}</ThemedText>
+        <LinearGradient
+            colors={['#F8FAFC', '#E2E8F0']}
+            style={styles.container}
+        >
+            <View style={styles.header}>
+                <ThemedText type="title" style={styles.title}>
+                    {student?.name}
+                </ThemedText>
+                <ThemedText style={styles.subtitle}>
+                    {student?.selectedSubjects.length} disciplinas selecionadas
+                </ThemedText>
+            </View>
 
             <FlatList
                 data={subjects}
+                contentContainerStyle={styles.listContent}
                 renderItem={({ item }) => (
-                    <View style={styles.subjectItem}>
+                    <View style={styles.subjectCard}>
                         <CustomCheckbox
                             checked={student?.selectedSubjects.includes(item.id) || false}
                             onPress={() => updateStudentSubjects(student?.id || '', item.id)}
                         />
-                        <ThemedText style={styles.subjectName}>{item.name}</ThemedText>
+                        <IconSymbol
+                            name="book.fill"
+                            size={20}
+                            color="#64748B"
+                            style={styles.subjectIcon}
+                        />
+                        <ThemedText type="defaultSemiBold" style={styles.subjectName}>
+                            {item.name}
+                        </ThemedText>
                     </View>
                 )}
                 keyExtractor={(item) => item.id}
+                ListEmptyComponent={
+                    <View style={styles.emptyContainer}>
+                        <IconSymbol
+                            name="book.closed.fill"
+                            size={48}
+                            color="#CBD5E1"
+                        />
+                        <ThemedText style={styles.emptyText}>
+                            Nenhuma disciplina disponível
+                        </ThemedText>
+                    </View>
+                }
             />
-        </View>
+        </LinearGradient>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
+        padding: 24,
+    },
+    header: {
+        marginBottom: 24,
+        paddingHorizontal: 8,
     },
     title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20,
+        fontSize: 28,
+        color: '#0F172A',
+        marginBottom: 4,
     },
-    subjectItem: {
+    subtitle: {
+        fontSize: 16,
+        color: '#64748B',
+    },
+    listContent: {
+        paddingBottom: 24,
+    },
+    subjectCard: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 12,
-        marginBottom: 8,
-        borderRadius: 8,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
+    },
+    subjectIcon: {
+        marginHorizontal: 12,
     },
     subjectName: {
+        flex: 1,
         fontSize: 16,
-        marginLeft: 12,
+        color: '#0F172A',
     },
-    checkbox: {
-        width: 24,
-        height: 24,
-        borderWidth: 2,
-        borderColor: '#ccc',
-        borderRadius: 4,
+    emptyContainer: {
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 100,
     },
-    checked: {
-        borderColor: '#4630EB',
-        backgroundColor: '#4630EB20',
-    },
-    checkmark: {
-        width: 12,
-        height: 12,
-        borderRadius: 2,
-        backgroundColor: '#4630EB',
+    emptyText: {
+        color: '#94A3B8',
+        fontSize: 16,
+        marginTop: 16,
+        textAlign: 'center',
     },
 });
