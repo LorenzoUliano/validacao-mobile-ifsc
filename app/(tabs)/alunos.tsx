@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         color: '#64748B',
     },
     listContent: {
-        paddingBottom: 24,
+        paddingBottom: 64,
     },
     studentCard: {
         backgroundColor: '#FFFFFF',

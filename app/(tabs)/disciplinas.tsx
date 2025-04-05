@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#CBD5E1',
     },
     listContent: {
-        paddingBottom: 24,
+        paddingBottom: 64,
     },
     subjectCard: {
         flexDirection: 'row',

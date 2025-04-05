@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { useStudents } from '@/contexts/StudentContext';
 import { CustomCheckbox } from '@/components/CustomCheckbox';
@@ -30,7 +30,7 @@ export default function StudentSubjects() {
                 data={subjects}
                 contentContainerStyle={styles.listContent}
                 renderItem={({ item }) => (
-                    <View style={styles.subjectCard}>
+                    <TouchableOpacity style={styles.subjectCard} onPress={() => updateStudentSubjects(student?.id || '', item.id)}>
                         <CustomCheckbox
                             checked={student?.selectedSubjects.includes(item.id) || false}
                             onPress={() => updateStudentSubjects(student?.id || '', item.id)}
@@ -44,7 +44,7 @@ export default function StudentSubjects() {
                         <ThemedText type="defaultSemiBold" style={styles.subjectName}>
                             {item.name}
                         </ThemedText>
-                    </View>
+                    </TouchableOpacity>
                 )}
                 keyExtractor={(item) => item.id}
                 ListEmptyComponent={
