@@ -33,7 +33,7 @@ export default function TabLayout() {
           tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
           headerShown: true,
-          header: ({ options }) => <MyCustomHeader options={options} />,
+          header: ({ options }: any) => <MyCustomHeader options={options} />,
           tabBarStyle: Platform.select({
             ios: {
               position: 'absolute',
@@ -50,7 +50,7 @@ export default function TabLayout() {
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: ({ color }: any) => (
               <IconSymbol size={28} name="house.fill" color={color} />
             ),
           }}
@@ -59,7 +59,7 @@ export default function TabLayout() {
           name="alunos"
           options={{
             title: 'Alunos',
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: ({ color }: any) => (
               <IconSymbol size={28} name="person.3.fill" color={color} />
             ),
           }}
@@ -68,7 +68,7 @@ export default function TabLayout() {
           name="disciplinas"
           options={{
             title: 'Disciplinas',
-            tabBarIcon: ({ color }) => (
+            tabBarIcon: ({ color }: any) => (
               <IconSymbol size={28} name="book.closed.fill" color={color} />
             ),
           }}
@@ -87,8 +87,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
     paddingBottom: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,

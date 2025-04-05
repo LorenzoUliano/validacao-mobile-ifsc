@@ -1,184 +1,178 @@
-import { ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { Link } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { TouchableOpacity } from 'react-native';
-import { BlurView } from 'expo-blur';
-import { SFSymbol } from 'expo-symbols';
+import { useStudents } from '@/contexts/StudentContext';
 
 export default function HomeScreen() {
+    const { students, subjects } = useStudents();
     return (
         <LinearGradient
-            colors={['#0F172A', '#1E40AF']}
-            style={styles.container}
+            colors={['#F8FAFC', '#E2E8F0']}
+            style={styles.gradientContainer}
+            start={{ x: 0.5, y: 0 }}
+            end={{ x: 0.5, y: 1 }}
         >
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                <ThemedView style={styles.content}>
-                    {/* Header Section */}
+            <ScrollView 
+                contentContainerStyle={styles.scrollContent}
+                style={styles.scrollView}
+            >
+                <View style={styles.content}>
                     <View style={styles.header}>
                         <View style={styles.logoContainer}>
                             <IconSymbol
                                 name="graduationcap.fill"
-                                size={100}
-                                color="#FFFFFF"
-                                style={styles.logoIcon}
+                                size={80}
+                                color="#0F172A"
                             />
-                            <View style={styles.logoGlow} />
+                            <View style={styles.logoBadge}>
+                                <ThemedText style={styles.badgeText}>v2.0</ThemedText>
+                            </View>
                         </View>
                         <ThemedText type="title" style={styles.title}>
                             SchoolSync
                         </ThemedText>
                         <ThemedText type="subtitle" style={styles.subtitle}>
-                            Sua plataforma de gestão educacional
+                            Gestão Educacional Integrada
                         </ThemedText>
                     </View>
 
                     {/* Cards Grid */}
                     <View style={styles.grid}>
-                        <GlassCard
-                            title="Gerenciar Alunos"
+                        <DashboardCard
+                            title="Alunos"
                             icon="person.3.fill"
                             href="/(tabs)/alunos"
-                            color="#6366F1"
+                            count={students.length}
                         />
                         
-                        <GlassCard
+                        <DashboardCard
                             title="Disciplinas"
                             icon="book.closed.fill"
                             href="/(tabs)/disciplinas"
-                            color="#8B5CF6"
+                            count={subjects.length}
                         />
                     </View>
-
-                    {/* Footer */}
-                    <ThemedText style={styles.footerText}>
-                        Gestão simplificada, resultados extraordinários
-                    </ThemedText>
-                </ThemedView>
+                </View>
             </ScrollView>
         </LinearGradient>
     );
 }
 
-const GlassCard = ({ title, icon, href, color }: {
+const DashboardCard = ({ title, icon, href, count }: {
     title: string;
-    icon: SFSymbol;
-    href: string;
-    color: string;
+    icon: any;
+    href: any;
+    count: number;
 }) => (
     <Link href={href} asChild>
-        <TouchableOpacity>
-            <BlurView intensity={30} style={[styles.card, { borderColor: color }]}>
-                <View style={styles.cardContent}>
-                    <View style={[styles.iconContainer, { backgroundColor: `${color}20` }]}>
-                        <IconSymbol
-                            name={icon}
-                            size={40}
-                            color="#FFFFFF"
-                            style={styles.icon}
-                        />
-                    </View>
-                    <ThemedText type="defaultSemiBold" style={styles.cardText}>
+        <TouchableOpacity style={styles.card}>
+            <View style={styles.cardContent}>
+                <View style={styles.cardHeader}>
+                    <IconSymbol
+                        name={icon}
+                        size={24}
+                        color="#0F172A"
+                    />
+                    <ThemedText type="defaultSemiBold" style={styles.cardTitle}>
                         {title}
                     </ThemedText>
                 </View>
-            </BlurView>
+                <ThemedText type="title" style={styles.cardCount}>
+                    {count}
+                </ThemedText>
+            </View>
         </TouchableOpacity>
     </Link>
 );
 
 const styles = StyleSheet.create({
-    container: {
+    gradientContainer: {
         flex: 1,
-        marginBottom: 50,
+    },
+    scrollView: {
+        flex: 1,
     },
     scrollContent: {
         flexGrow: 1,
+        minHeight: '100%',
     },
     content: {
         flex: 1,
         padding: 24,
-        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
     },
     header: {
         alignItems: 'center',
-        marginTop: 40,
+        marginBottom: 40,
     },
     logoContainer: {
         position: 'relative',
         marginBottom: 20,
     },
-    logoIcon: {
-        opacity: 0.9,
-        transform: [{ rotate: '15deg' }],
-    },
-    logoGlow: {
-        ...StyleSheet.absoluteFillObject,
+    logoBadge: {
+        position: 'absolute',
+        top: -10,
+        right: -20,
         backgroundColor: '#6366F1',
-        opacity: 0.2,
-        borderRadius: 50,
-        transform: [{ scale: 1.4 }],
+        borderRadius: 8,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+    },
+    badgeText: {
+        color: '#FFFFFF',
+        fontSize: 12,
+        fontWeight: '600',
     },
     title: {
-        fontSize: 40,
-        color: '#FFFFFF',
-        fontWeight: '800',
+        fontSize: 32,
+        color: '#0F172A',
         marginBottom: 8,
         textAlign: 'center',
-        textShadowColor: 'rgba(99, 102, 241, 0.4)',
-        textShadowOffset: { width: 0, height: 4 },
-        textShadowRadius: 10,
-        paddingTop: 10,
     },
     subtitle: {
-        fontSize: 18,
-        color: '#CBD5E1',
+        fontSize: 16,
+        color: '#64748B',
         textAlign: 'center',
-        maxWidth: 300,
+        maxWidth: 280,
         lineHeight: 24,
     },
     grid: {
-        gap: 20,
-        marginVertical: 40,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 16,
+        justifyContent: 'center',
+        marginBottom: 32,
     },
     card: {
-        borderRadius: 24,
-        padding: 24,
-        overflow: 'hidden',
-        borderWidth: 1,
-        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-        minHeight: 160,
-        justifyContent: 'center',
-        backdropFilter: 'blur(10px)',
+        width: 160,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 6,
+        elevation: 2,
     },
     cardContent: {
+        gap: 16,
+    },
+    cardHeader: {
+        flexDirection: 'row',
         alignItems: 'center',
-        gap: 20,
+        gap: 8,
     },
-    iconContainer: {
-        padding: 16,
-        borderRadius: 16,
-        aspectRatio: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+    cardTitle: {
+        fontSize: 16,
+        color: '#0F172A',
     },
-    icon: {
-        transform: [{ scale: 1.2 }],
-    },
-    cardText: {
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#FFFFFF',
-        textAlign: 'center',
-        letterSpacing: 0.5,
-    },
-    footerText: {
-        color: '#94A3B8',
-        textAlign: 'center',
-        fontSize: 14,
-        marginBottom: 20,
+    cardCount: {
+        fontSize: 32,
+        color: '#0F172A',
+        fontWeight: '700',
     },
 });
