@@ -7,6 +7,8 @@ type StudentContextType = {
     updateStudentSubjects: (studentId: string, subjectId: string) => void;
     addSubject: (name: string) => void;
     deleteSubject: (subjectId: string) => void;
+    addStudent: (name: string) => void;
+    deleteStudent: (studentId: string) => void;
 };
 
 const StudentContext = createContext<StudentContextType>({
@@ -15,6 +17,8 @@ const StudentContext = createContext<StudentContextType>({
     updateStudentSubjects: () => { },
     addSubject: () => { },
     deleteSubject: () => { },
+    addStudent: () => { },
+    deleteStudent: () => { }
 });
 
 export const StudentProvider = ({ children }: { children: React.ReactNode }) => {
@@ -45,17 +49,38 @@ export const StudentProvider = ({ children }: { children: React.ReactNode }) => 
 
     const deleteSubject = (subjectId: string) => {
         setSubjects(prev => prev.filter(subject => subject.id !== subjectId));
-        
-        setStudents(prevStudents => 
-          prevStudents.map(student => ({
-            ...student,
-            selectedSubjects: student.selectedSubjects.filter(id => id !== subjectId)
-          }))
-        );
-      };
 
+        setStudents(prevStudents =>
+            prevStudents.map(student => ({
+                ...student,
+                selectedSubjects: student.selectedSubjects.filter(id => id !== subjectId)
+            }))
+        );
+    };
+
+    const addStudent = (name: string) => {
+        const newStudent = {
+          id: Date.now().toString(),
+          name: name.trim(),
+          selectedSubjects: [],
+        };
+        setStudents(prev => [...prev, newStudent]);
+    };
+    
+    const deleteStudent = (studentId: string) => {
+        setStudents(prev => prev.filter(student => student.id !== studentId));
+    };
+    
     return (
-        <StudentContext.Provider value={{ students, subjects, updateStudentSubjects, addSubject, deleteSubject }}>
+        <StudentContext.Provider value={{ 
+            students, 
+            subjects, 
+            updateStudentSubjects, 
+            addSubject, 
+            deleteSubject,
+            addStudent,
+            deleteStudent 
+        }}>
             {children}
         </StudentContext.Provider>
     );

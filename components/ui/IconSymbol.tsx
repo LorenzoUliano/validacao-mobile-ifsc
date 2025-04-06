@@ -12,9 +12,14 @@ const MAPPING = {
     'chevron.left.forwardslash.chevron.right': 'code',
     'chevron.right': 'chevron-right',
     'person.fill': 'person',
-    'person.3.fill': 'people',
+    'person.3.fill': 'groups',
     'book.closed.fill': 'book',
-} as Partial<
+    'graduationcap.fill': 'school',
+    'plus.circle.fill': 'add',
+    'trash.fill': 'delete',
+    'exclamationmark.triangle.fill': 'warning-fill',
+    'person.2.slash.fill': 'person-off',
+} as unknown as Partial<
     Record<
         import('expo-symbols').SymbolViewProps['name'],
         React.ComponentProps<typeof MaterialIcons>['name']
