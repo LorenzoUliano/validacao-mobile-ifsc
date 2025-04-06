@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 import { initialStudents, Student, initialSubjects, Subject } from '@/hooks/data';
 
+const getNextId = (items: { id: string }[]): number => {
+    if (items.length === 0) return 1;
+    const ids = items.map(item => parseInt(item.id, 10));
+    const maxId = Math.max(...ids);
+    return maxId + 1;
+};
+
 type StudentContextType = {
     students: Student[];
     subjects: Subject[];
@@ -41,7 +48,7 @@ export const StudentProvider = ({ children }: { children: React.ReactNode }) => 
 
     const addSubject = (name: string) => {
         const newSubject = {
-            id: Date.now().toString(),
+            id: getNextId(subjects).toString(),
             name: name.trim(),
         };
         setSubjects(prev => [...prev, newSubject]);
@@ -60,26 +67,26 @@ export const StudentProvider = ({ children }: { children: React.ReactNode }) => 
 
     const addStudent = (name: string) => {
         const newStudent = {
-          id: Date.now().toString(),
-          name: name.trim(),
-          selectedSubjects: [],
+            id: getNextId(students).toString(),
+            name: name.trim(),
+            selectedSubjects: [],
         };
         setStudents(prev => [...prev, newStudent]);
     };
-    
+
     const deleteStudent = (studentId: string) => {
         setStudents(prev => prev.filter(student => student.id !== studentId));
     };
-    
+
     return (
-        <StudentContext.Provider value={{ 
-            students, 
-            subjects, 
-            updateStudentSubjects, 
-            addSubject, 
+        <StudentContext.Provider value={{
+            students,
+            subjects,
+            updateStudentSubjects,
+            addSubject,
             deleteSubject,
             addStudent,
-            deleteStudent 
+            deleteStudent
         }}>
             {children}
         </StudentContext.Provider>

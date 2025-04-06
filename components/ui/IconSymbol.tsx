@@ -17,7 +17,7 @@ const MAPPING = {
     'graduationcap.fill': 'school',
     'plus.circle.fill': 'add',
     'trash.fill': 'delete',
-    'exclamationmark.triangle.fill': 'warning-fill',
+    'exclamationmark.triangle.fill': 'warning',
     'person.2.slash.fill': 'person-off',
 } as unknown as Partial<
     Record<

@@ -39,7 +39,6 @@ export default function Alunos() {
             colors={['#F8FAFC', '#E2E8F0']}
             style={styles.container}
         >
-            {/* Adicione o formulário de cadastro */}
             <View style={styles.header}>
                 <ThemedText type="title" style={styles.title}>
                     Alunos Cadastrados
@@ -124,7 +123,6 @@ export default function Alunos() {
                 }
             />
 
-            {/* Modal de Confirmação */}
             <Modal transparent visible={showModal}>
                 <View style={styles.modalOverlay}>
                     <View style={styles.modalContent}>

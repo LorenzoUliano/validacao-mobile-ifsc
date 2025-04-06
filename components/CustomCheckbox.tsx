@@ -1,6 +1,5 @@
 // components/CustomCheckbox.tsx
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
 
 export const CustomCheckbox = ({ checked, onPress }: { checked: boolean; onPress: () => void }) => {
     return (
